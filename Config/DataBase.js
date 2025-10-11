@@ -1,9 +1,9 @@
 var Mongoose = require('mongoose');
-
+require('dotenv').config();
 
 module.exports = ()=>
 {
-    Mongoose.connect("mongodb+srv://Admin_DB:asdgGJThtjy@cluster0.1lkwsbj.mongodb.net/Portfolio?retryWrites=true&w=majority&appName=Cluster0");
+    Mongoose.connect(process.env.MongoDB);
     var mongodb = Mongoose.connection;
 
     mongodb.once('open', ()=>{
