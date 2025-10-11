@@ -14,7 +14,7 @@ let ProjectsSchema = new Schema(
 
 ProjectsSchema.set('toJSON', {
     versionKey: false,
-    transform: function (doc, ret) { delete ret._id }
+    //transform: function (doc, ret) { delete ret._id }
 });
 
 module.exports = mongoose.model('Project', ProjectsSchema);

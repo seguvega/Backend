@@ -17,9 +17,9 @@ const UserSchema = new Schema(
 
 UserSchema.set('toJSON', {
     versionKey: false,
-    transform:  function(doc, retu) {
+    /*transform:  function(doc, retu) {
         delete retu._id;
-    }
+    }*/
 });
 
 module.exports = mongoose.model('User', UserSchema);

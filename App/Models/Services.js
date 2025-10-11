@@ -13,7 +13,7 @@ let ServicesSchema = new Schema(
 
 ServicesSchema.set('toJSON', {
     versionKey: false,
-    transform: function (doc, ret) { delete ret._id }
+    //transform: function (doc, ret) { delete ret._id }
 });
 
 module.exports = mongoose.model('Service', ServicesSchema);

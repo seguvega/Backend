@@ -14,7 +14,7 @@ let ContactsSchema = new Schema(
 
 ContactsSchema.set('toJSON', {
     versionKey: false,
-    transform: function (doc, ret) { delete ret._id }
+    //transform: function (doc, ret) { delete ret._id }
 });
 
 module.exports = mongoose.model('Contact', ContactsSchema);
