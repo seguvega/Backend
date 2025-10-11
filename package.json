@@ -1,0 +1,26 @@
+{
+  "name": "restapi",
+  "version": "1.0.0",
+  "description": "API Web Server",
+  "homepage": "https://github.com/seguvega/Backend#readme",
+  "bugs": {
+    "url": "https://github.com/seguvega/Backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seguvega/Backend.git"
+  },
+  "license": "ISC",
+  "author": "Sebastian Velasco",
+  "type": "commonjs",
+  "main": "Server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  }
+}
