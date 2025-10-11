@@ -4,7 +4,9 @@ var Logger = require('morgan');
 var HttpErrors = require('http-errors');
 var IndexRouter = require('./App/Routers/Index');
 var UserRouter = require('./App/Routers/Users');
-
+var ContactRouter = require('./App/Routers/Contacts');
+var ProjectRouter = require('./App/Routers/Projects');
+var ServiceRouter = require('./App/Routers/Services');
 
 var App = Express();
 
@@ -18,6 +20,9 @@ App.use(Logger('dev'));
 
 App.use('/', IndexRouter);
 App.use('/api/users', UserRouter);
+App.use('/api/contacts', ContactRouter);
+App.use('/api/projects', ProjectRouter);
+App.use('/api/services', ServiceRouter);
 
 //Error Handler
 App.use((req, res, next)=>
