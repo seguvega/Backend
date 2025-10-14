@@ -32,23 +32,28 @@ module.exports.GetOne = async (req, res, next)=>{
 }
 
 module.exports.Update = async (req, res, next)=>{
+  try {
+    const result = await ContactModel.updateOne(
+      { _id: req.params.id },
+      { $set: req.body }
+    );
 
-    try {
-        let UpdateContact = ContactModel(req.body);
-        UpdateContact._id = req.params.id;
-        let result = await ContactModel.updateOne({_id: req.params.id}, UpdateContact);//Update   
-        if(result.modifiedCount > 0)
-        {
-            res.json({message: 'Contact updated successfully'});
-        }
-        else
-        {
-            throw new Error('Contact not found');
-        }
-    } catch (error) {
-        console.log(error);
-        next(error);
+    if (result.modifiedCount > 0)
+         {
+      res.json({ message: 'Contact updated successfully' });
+    } 
+    else if (result.matchedCount === 0) 
+    {
+      throw new Error('Contact not found');
+    } 
+    else 
+    {
+      res.json({ message: 'No changes were made' });
     }
+    } catch (error) {
+    console.error(error);
+    next(error);
+  }
 }
 
 module.exports.Delete = async (req, res, next)=>{
