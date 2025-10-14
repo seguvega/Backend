@@ -33,6 +33,7 @@ module.exports.GetOne = async (req, res, next)=>{
 
 module.exports.Update = async (req, res, next)=>{
   try {
+    //safe way to update usinf $set operator
     const result = await ContactModel.updateOne(
       { _id: req.params.id },
       { $set: req.body }
