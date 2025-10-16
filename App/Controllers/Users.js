@@ -36,6 +36,7 @@ module.exports.Update = async (req, res, next)=>{
     try {
         let UpdateUser = UserModel(req.body);
         UpdateUser._id = req.params.id;
+        UpdateUser.CreatedAt = Date.now();
         let result = await UserModel.updateOne({_id: req.params.id}, UpdateUser);//Update   
         if(result.modifiedCount > 0)
         {

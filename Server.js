@@ -17,7 +17,7 @@ App.use(Express.urlencoded({extended: true}));//Middleware to parse URL-encoded
 
 DbConnection();
 
-App.use(Logger('dev'));  
+App.use(Logger('dev'));//Error Handler  
 
 App.use('/', IndexRouter);
 App.use('/api/users', UserRouter);
@@ -25,12 +25,12 @@ App.use('/api/contacts', ContactRouter);
 App.use('/api/projects', ProjectRouter);
 App.use('/api/services', ServiceRouter);
 
-//Error Handler
-App.use((req, res, next)=>
-{
-    next(HttpErrors(404));
-});
+// App.use((req, res, next)=>
+// {
+//     next(HttpErrors(404));
+// });
 
+//Using Logger to log the errors
 App.use((err, req, res, next)=> 
 {
     res.locals.message = err.message;

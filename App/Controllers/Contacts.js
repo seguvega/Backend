@@ -78,7 +78,7 @@ module.exports.Delete = async (req, res, next)=>{
 
 module.exports.DeleteAll = async(req, res, next) => {
     try {
-        let result = await ContactModel.deleteMany({});
+        let result = await ContactModel.deleteMany({});///I can send an array of ids
         if(result.deletedCount > 0)
         {
             res.json({message: 'All the Contacts were Deleted'});
