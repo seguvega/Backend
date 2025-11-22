@@ -5,7 +5,10 @@ let ContactsSchema = new Schema(
     {
         firstname: {type: String},
         lastname: {type: String},
-        email: {type: String, unique: true}
+        email: {type: String},
+        PhoneNumber: {type: String},
+        message: {type: String}
+
     },
     {
          Collections: 'Contacts'

@@ -1,6 +1,7 @@
 var Express = require('express');
 var DbConnection = require('./Config/DataBase');
 var Logger = require('morgan');
+var cors = require('cors');
 var HttpErrors = require('http-errors');
 var IndexRouter = require('./App/Routers/Index');
 var UserRouter = require('./App/Routers/Users');
@@ -11,7 +12,7 @@ var ServiceRouter = require('./App/Routers/Services');
 
 var App = Express();
 
-
+App.use(cors());
 App.use(Express.json());//JSON bodies to use req.body in POST
 App.use(Express.urlencoded({extended: true}));//Middleware to parse URL-encoded
 
