@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 let ServicesSchema = new Schema(
     {
         title: {type: String},
+        img: {type: String},
         description: {type: String }
     },
     {
