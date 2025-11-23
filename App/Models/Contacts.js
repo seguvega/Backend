@@ -6,7 +6,7 @@ let ContactsSchema = new Schema(
         firstname: {type: String},
         lastname: {type: String},
         email: {type: String},
-        PhoneNumber: {type: String},
+        phoneNumber: {type: String},
         message: {type: String}
 
     },
