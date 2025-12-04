@@ -1,9 +1,11 @@
 let ServiceModel = require('../Models/Services');
+let UserModel = require('../Models/Users');
 
 module.exports.create = async (req, res, next)=>{
 
     try {
         let newService = req.body;
+        newService.owner = req.auth.uid;
         let MongoService = await ServiceModel.create(newService);
         res.json(MongoService);
     } catch (error) {
@@ -84,6 +86,42 @@ module.exports.DeleteAll = async(req, res, next) => {
         }
     } catch (error) {
         console.log(error);
+        next(error);
+    }
+}
+
+module.exports.hasAuthorization = async function(req, res, next){
+
+    try {
+        let id = req.params.id
+        let inventoryItem = await ServiceModel.findById(id).populate('owner');
+        console.log(inventoryItem);
+
+        // If there is no item found.
+        if (inventoryItem == null) {
+            throw new Error('Item not found.') 
+        }
+        else if (inventoryItem.owner != null) { 
+
+            if (inventoryItem.owner.id != req.auth.id) { 
+
+                let currentUser = await UserModel.findOne({_id: req.auth.id}, 'admin');
+  
+                if(currentUser.admin != true){
+
+                    console.log('====> Not authorized');
+                    return res.status(403).json(
+                        {
+                            success: false,
+                            message: 'User is not authorized to modify this item.'
+                        }
+                    );
+                }
+            }
+        }
+        next();
+    } catch (error) {
+        console.log(error);   
         next(error);
     }
 }

@@ -1,9 +1,12 @@
 let ContactModel = require('../Models/Contacts');
+let UserModel = require('../Models/Users');
 
 module.exports.create = async (req, res, next)=>{
 
     try {
-        let MongoContact = await ContactModel.create(req.body);
+        let newContact = req.body;
+        newContact.owner = req.auth.uid;
+        let MongoContact = await ContactModel.create(newContact);
         res.json(MongoContact);
     } catch (error) {
         console.log(error);
@@ -11,10 +14,11 @@ module.exports.create = async (req, res, next)=>{
     }
 }
 
-module.exports.list = async (req, res, next)=>{
+module.exports.list = async function (req, res, next) {
     try {
-        let contact = await ContactModel.find();
-        res.json(contact);
+        let list = await ContactModel.find().populate('owner');
+
+        res.json(list);
     } catch (error) {
         console.log(error);
         next(error);
@@ -89,6 +93,42 @@ module.exports.DeleteAll = async(req, res, next) => {
         }
     } catch (error) {
         console.log(error);
+        next(error);
+    }
+}
+
+module.exports.hasAuthorization = async function(req, res, next){
+
+    try {
+        let id = req.params.id
+        let inventoryItem = await ContactModel.findById(id).populate('owner');
+        console.log(inventoryItem);
+
+        // If there is no item found.
+        if (inventoryItem == null) {
+            throw new Error('Item not found.') 
+        }
+        else if (inventoryItem.owner != null) { 
+
+            if (inventoryItem.owner.id != req.auth.id) { 
+
+                let currentUser = await UserModel.findOne({_id: req.auth.id}, 'admin');
+  
+                if(currentUser.admin != true){
+
+                    console.log('====> Not authorized');
+                    return res.status(403).json(
+                        {
+                            success: false,
+                            message: 'User is not authorized to modify this item.'
+                        }
+                    );
+                }
+            }
+        }
+        next();
+    } catch (error) {
+        console.log(error);   
         next(error);
     }
 }

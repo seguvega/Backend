@@ -1,9 +1,12 @@
 let ProjectModel = require('../Models/Projects');
+let UserModel = require('../Models/Users');
 
 module.exports.create = async (req, res, next)=>{
 
     try {
-        let MongoProject = await ProjectModel.create(req.body);
+        let newProject = req.body;
+        newProject.owner = req.auth.uid;
+        let MongoProject = await ProjectModel.create(newProject);
         res.json(MongoProject);
     } catch (error) {
         console.log(error);
@@ -11,10 +14,11 @@ module.exports.create = async (req, res, next)=>{
     }
 }
 
-module.exports.list = async (req, res, next)=>{
+module.exports.list = async function (req, res, next) {
     try {
-        let Projects = await ProjectModel.find();
-        res.json(Projects);
+        let list = await ProjectModel.find().populate('owner');
+
+        res.json(list);
     } catch (error) {
         console.log(error);
         next(error);
@@ -53,6 +57,7 @@ module.exports.Update = async (req, res, next)=>{
 
 module.exports.Delete = async (req, res, next)=>{
 
+    console.log(req.params);
     try {
         let result = await ProjectModel.deleteOne({_id: req.params.id});//Delete
 
@@ -83,6 +88,42 @@ module.exports.DeleteAll = async(req, res, next) => {
         }
     } catch (error) {
         console.log(error);
+        next(error);
+    }
+}
+
+module.exports.hasAuthorization = async function(req, res, next){
+
+    try {
+        let id = req.params.id
+        let inventoryItem = await ProjectModel.findById(id).populate('owner');
+        console.log(inventoryItem);
+
+        // If there is no item found.
+        if (inventoryItem == null) {
+            throw new Error('Item not found.') 
+        }
+        else if (inventoryItem.owner != null) { 
+
+            if (inventoryItem.owner.id != req.auth.id) { 
+
+                let currentUser = await UserModel.findOne({_id: req.auth.id}, 'admin');
+  
+                if(currentUser.admin != true){
+
+                    console.log('====> Not authorized');
+                    return res.status(403).json(
+                        {
+                            success: false,
+                            message: 'User is not authorized to modify this item.'
+                        }
+                    );
+                }
+            }
+        }
+        next();
+    } catch (error) {
+        console.log(error);   
         next(error);
     }
 }
