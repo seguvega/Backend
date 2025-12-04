@@ -7,7 +7,8 @@ let ContactsSchema = new Schema(
         lastname: {type: String},
         email: {type: String},
         phoneNumber: {type: String},
-        message: {type: String}
+        message: {type: String},
+        owner: { type: String }
 
     },
     {
@@ -16,8 +17,11 @@ let ContactsSchema = new Schema(
 );
 
 ContactsSchema.set('toJSON', {
+    virtuals: true,
     versionKey: false,
-    //transform: function (doc, ret) { delete ret._id }
+    transform: function(doc, ret){
+        delete ret._id
+    }
 });
 
 module.exports = mongoose.model('Contact', ContactsSchema);

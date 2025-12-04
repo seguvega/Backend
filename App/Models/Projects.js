@@ -5,7 +5,8 @@ let ProjectsSchema = new Schema(
     {
         title: {type: String},
         img: {type: String},
-        description: {type: String }
+        description: {type: String },
+        owner: { type: String }
     },
     {
          Collections: 'Projects'
@@ -13,8 +14,11 @@ let ProjectsSchema = new Schema(
 );
 
 ProjectsSchema.set('toJSON', {
+    virtuals: true,
     versionKey: false,
-    //transform: function (doc, ret) { delete ret._id }
+    transform: function(doc, ret){
+        delete ret._id
+    }
 });
 
 module.exports = mongoose.model('Project', ProjectsSchema);

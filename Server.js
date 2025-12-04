@@ -8,6 +8,7 @@ var UserRouter = require('./App/Routers/Users');
 var ContactRouter = require('./App/Routers/Contacts');
 var ProjectRouter = require('./App/Routers/Projects');
 var ServiceRouter = require('./App/Routers/Services');
+var FirebaseAdmin = require('./Config/firebaseAdmin');
 
 
 var App = Express();
@@ -17,6 +18,7 @@ App.use(Express.json());//JSON bodies to use req.body in POST
 App.use(Express.urlencoded({extended: true}));//Middleware to parse URL-encoded
 
 DbConnection();
+FirebaseAdmin();
 
 App.use(Logger('dev'));//Error Handler  
 
@@ -44,6 +46,6 @@ App.use((err, req, res, next)=>
     });
 });
 
-App.listen(3000, ()=>{
+App.listen(3000 || 1000, ()=>{
     console.log("Server is running http://localhost:3000/");
 });

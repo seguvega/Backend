@@ -5,7 +5,8 @@ let ServicesSchema = new Schema(
     {
         title: {type: String},
         img: {type: String},
-        description: {type: String }
+        description: {type: String },
+        owner: { type: String }
     },
     {
          Collections: 'Services'
@@ -13,8 +14,11 @@ let ServicesSchema = new Schema(
 );
 
 ServicesSchema.set('toJSON', {
+    virtuals: true,
     versionKey: false,
-    //transform: function (doc, ret) { delete ret._id }
+    transform: function(doc, ret){
+        delete ret._id
+    }
 });
 
 module.exports = mongoose.model('Service', ServicesSchema);

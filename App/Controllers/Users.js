@@ -22,6 +22,21 @@ module.exports.List = async (req, res, next)=>{
     }
 }
 
+module.exports.read = async function (req, res, next) {
+    res.json(req.user);
+}
+
+module.exports.SetUserByID = async function (req, res, next) {
+    try {
+        req.user = await UserModel.findOne({ _id: req.params.id }, '-hashed_password -salt');
+        next();
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+}
+
+
 module.exports.GetOne = async (req, res, next)=>{
     try {
         let user = await UserModel.findOne({_id: req.params.id });
@@ -85,4 +100,19 @@ module.exports.DeleteAll = async(req, res, next) => {
         console.log(error);
         next(error);
     }
+}
+
+module.exports.hasAuthorization = async function (req, res, next) {
+    console.log("Payload", req.auth);
+    let authorized = req.auth && req.user && req.auth.username == req.user.username;
+
+    if (!authorized) {
+        return res.status('403').json(
+            {
+                success: false,
+                message: "User is not authorized"
+            }
+        )
+    }
+    next();
 }
