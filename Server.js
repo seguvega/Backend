@@ -8,7 +8,7 @@ var UserRouter = require('./App/Routers/Users');
 var ContactRouter = require('./App/Routers/Contacts');
 var ProjectRouter = require('./App/Routers/Projects');
 var ServiceRouter = require('./App/Routers/Services');
-var FirebaseAdmin = require('./Config/firebaseAdmin');
+var FirebaseAdmin = require('./Config/FirebaseAdmin');
 
 
 var App = Express();
